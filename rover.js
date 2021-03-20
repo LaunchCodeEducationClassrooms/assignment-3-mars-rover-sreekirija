@@ -6,6 +6,7 @@ class Rover {
      this.generatorWatts = 110;
   }
     
+  //function to update properties based on commandType
   receiveMessage(message) {
   
     let commands = message.commands;
@@ -14,15 +15,18 @@ class Rover {
     results: []
     };
 
-    for(let i=0;i<commands.length;i++){
+    for(let i=0;i<commands.length;i++) {
+
       if(commands[i].commandType === 'MOVE') {
         if(this.mode === 'LOW_POWER'){
           response.results.push({completed: false});
         } else {
-            this.position=commands[i].value;
+            this.position=commands[i].value;      //updating the rover position value only if mode is not in LOW_POWER
             response.results.push({completed: true});
           }
-      } else if(commands[i].commandType === 'STATUS_CHECK') {
+      } 
+      
+      else if(commands[i].commandType === 'STATUS_CHECK') {
           response.results.push({
             completed: true, 
             roverStatus: { 
@@ -31,17 +35,19 @@ class Rover {
             position: this.position
             }
           });
-        } else if (commands[i].commandType === 'MODE_CHANGE') {
+        } 
+        
+        else if (commands[i].commandType === 'MODE_CHANGE') {
             this.mode = commands[i].value;
             response.results.push({completed: true});
           }
+    
     } 
 
   return response;
   }
   
 }
-
 
 
 
